@@ -1,19 +1,22 @@
-// index.js
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config(); // Loads environment variables from .env file
 
 const authRoutes = require('./routes/authRoutes');  // Import authentication routes
+const appointmentRoutes = require("./routes/appointmentRoutes");
+const availabilityRoutes = require("./routes/availabilityRoutes");
 const sequelize = require('./db/pool');          // Database connection
 
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());  // To parse JSON bodies
+app.use(express.json());  // Only this middleware is needed to parse JSON bodies for POST/PUT requests, etc.
 
 // Routes
 app.use('/api/auth', authRoutes);  // Register authentication routes
+app.use("/api/appointments", appointmentRoutes);
+app.use("/api/availability", availabilityRoutes);
 
 // Test route
 app.get('/', (req, res) => {
