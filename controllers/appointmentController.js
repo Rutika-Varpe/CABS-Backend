@@ -40,7 +40,13 @@ exports.getAppointmentsByPatient = async (req, res) => {
     // Retrieve appointments for the specified patient and include doctor details
     const appointments = await Appointment.findAll({
       where: { patient_id: patientId },
-      include: [{ model: User, as: "doctor", attributes: ["full_name", "role"] }],
+      include: [
+        {
+          model: User,
+          as: "doctor",
+          attributes: ["full_name", "role", "specialization"], // Add 'specialization' here
+        },
+      ],
     });
 
     res.json(appointments); // Send back the data in JSON format
