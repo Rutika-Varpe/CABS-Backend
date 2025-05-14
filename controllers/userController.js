@@ -60,6 +60,18 @@ const registerUser = async (req, res) => {
 
 
 // Login user (authenticate)
+const getDoctors = async (req, res) => {
+  try {
+    const doctors = await User.findAll({
+      where: { role: "doctor" },
+      attributes: ["id", "full_name", "specialization"],
+    });
+    res.json(doctors);
+  } catch (err) {
+    console.error("Failed to fetch doctors", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -81,4 +93,4 @@ const loginUser = async (req, res) => {
   res.json({ user, token });
 };
 
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser, getDoctors};

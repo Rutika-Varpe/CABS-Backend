@@ -5,6 +5,7 @@ require('dotenv').config(); // Loads environment variables from .env file
 const authRoutes = require('./routes/authRoutes');  // Import authentication routes
 const appointmentRoutes = require("./routes/appointmentRoutes");
 const availabilityRoutes = require("./routes/availabilityRoutes");
+const userRoutes = require("./routes/authRoutes");
 const sequelize = require('./db/pool');          // Database connection
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());  // Only this middleware is needed to parse JSON bodies
 app.use('/api/auth', authRoutes);  // Register authentication routes
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/availability", availabilityRoutes);
+app.use("/api/users", userRoutes);
 
 // Test route
 app.get('/', (req, res) => {
