@@ -1,16 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const {
-  getAppointmentsByPatient,
-  updateAppointmentStatus,
-  createAppointment
-} = require("../controllers/appointmentController");
+const authMiddleware = require("../middleware/authMiddleware"); // Import the authMiddleware
+const appointmentController = require("../controllers/appointmentController");
 
-// Get all appointments for a patient
-router.post("/", createAppointment); 
-router.get("/patient/:patientId", getAppointmentsByPatient);
+// Create a new appointment (requires authentication)
+router.post("/appointments", authMiddleware, appointmentController.createAppointment);
 
-// Update appointment status (doctor)
-router.put("/:id/status", updateAppointmentStatus);
+// Get appointments for a patient (requires authentication)
+router.get("/appointments/:patientId", authMiddleware, appointmentController.getAppointmentsByPatient);
+
+// Update appointment status (requires authentication)
+router.put("/appointments/:id/status", authMiddleware, appointmentController.updateAppointmentStatus);
 
 module.exports = router;

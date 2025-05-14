@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');  // Import authentication rou
 const appointmentRoutes = require("./routes/appointmentRoutes");
 const availabilityRoutes = require("./routes/availabilityRoutes");
 const userRoutes = require("./routes/authRoutes");
+const slotRoutes = require("./routes/availabilityRoutes");
 const sequelize = require('./db/pool');          // Database connection
 
 const app = express();
@@ -19,6 +20,7 @@ app.use('/api/auth', authRoutes);  // Register authentication routes
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/availability", availabilityRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/slots", slotRoutes);
 
 // Test route
 app.get('/', (req, res) => {

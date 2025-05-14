@@ -16,7 +16,7 @@ exports.getSlotsByDoctor = async (req, res) => {
   }
 };
 
-// Add new availability slot
+// Create a new slot (optional but already present)
 exports.createSlot = async (req, res) => {
   const { doctor_id, available_date, start_time, end_time } = req.body;
 
