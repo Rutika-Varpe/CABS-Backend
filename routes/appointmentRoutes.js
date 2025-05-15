@@ -1,15 +1,41 @@
 const express = require("express");
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware"); // Import the authMiddleware
+const authMiddleware = require("../middleware/authMiddleware");
 const appointmentController = require("../controllers/appointmentController");
 
-// Create a new appointment (requires authentication)
-router.post("/appointments", authMiddleware, appointmentController.createAppointment);
+// 👇 Put more specific routes ABOVE general routes
+router.put(
+  "/appointments/:doctorId/:appointmentId/status",
+  authMiddleware, // ✅ Middleware added
+  appointmentController.updateAppointmentStatusByDoctor
+);
 
-// Get appointments for a patient (requires authentication)
-router.get("/appointments/:patientId", authMiddleware, appointmentController.getAppointmentsByPatient);
+// Create a new appointment
+router.post(
+  "/appointments",
+  authMiddleware,
+  appointmentController.createAppointment
+);
 
-// Update appointment status (requires authentication)
-router.put("/appointments/:id/status", authMiddleware, appointmentController.updateAppointmentStatus);
+// Get appointments for a patient
+router.get(
+  "/appointments/:patientId",
+  authMiddleware,
+  appointmentController.getAppointmentsByPatient
+);
+
+// Get appointments for a doctor
+router.get(
+  "/doctor/:doctorId",
+  authMiddleware,
+  appointmentController.getAppointmentsByDoctor
+);
+
+// General update (admin maybe?) — keep it last
+router.put(
+  "/appointments/:id/status",
+  authMiddleware,
+  appointmentController.updateAppointmentStatus
+);
 
 module.exports = router;

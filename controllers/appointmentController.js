@@ -56,6 +56,29 @@ exports.getAppointmentsByPatient = async (req, res) => {
   }
 };
 
+
+exports.getAppointmentsByDoctor = async (req, res) => {
+  const { doctorId } = req.params;
+
+  try {
+    const appointments = await Appointment.findAll({
+      where: { doctor_id: doctorId },
+      include: [
+        {
+          model: User,
+          as: "patient",
+          attributes: ["full_name", "role"],
+        },
+      ],
+    });
+
+    res.json(appointments);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch appointments for doctor" });
+  }
+};
+
 // Doctor updates appointment status (approve or cancel)
 exports.updateAppointmentStatus = async (req, res) => {
   const { id } = req.params; // Get appointment id from URL
@@ -75,5 +98,38 @@ exports.updateAppointmentStatus = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to update appointment" });
+  }
+};
+exports.updateAppointmentStatusByDoctor = async (req, res) => {
+  const { doctorId, appointmentId } = req.params;
+  const { status } = req.body;
+
+  console.log("Incoming PUT request:", { doctorId, appointmentId, status });
+
+  if (!status) {
+    return res.status(400).json({ message: "Status is required" });
+  }
+
+  try {
+    const appointment = await Appointment.findOne({
+      where: {
+        id: appointmentId,
+        doctor_id: doctorId,
+      },
+    });
+
+    if (!appointment) {
+      return res
+        .status(404)
+        .json({ message: "Appointment not found or unauthorized" });
+    }
+
+    appointment.status = status;
+    await appointment.save();
+
+    res.json({ message: "Appointment status updated", appointment });
+  } catch (err) {
+    console.error("Failed to update appointment status:", err);
+    res.status(500).json({ message: "Failed to update appointment status" });
   }
 };

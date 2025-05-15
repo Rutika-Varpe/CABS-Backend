@@ -22,6 +22,7 @@ app.use("/api/availability", availabilityRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/slots", slotRoutes);
 
+
 // Test route
 app.get('/', (req, res) => {
   res.send('Clinic Appointment API is running');
