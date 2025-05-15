@@ -133,3 +133,32 @@ exports.updateAppointmentStatusByDoctor = async (req, res) => {
     res.status(500).json({ message: "Failed to update appointment status" });
   }
 };
+
+
+// controllers/appointmentController.js
+
+exports.deleteAppointmentByDoctor = async (req, res) => {
+  const { doctorId, appointmentId } = req.params;
+
+  try {
+    // Assuming you have a Sequelize model called Appointment
+    const appointment = await Appointment.findOne({
+      where: {
+        id: appointmentId,
+        doctor_id: doctorId
+      }
+    });
+
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    await appointment.destroy();
+
+    res.status(200).json({ message: "Appointment deleted successfully" });
+  } catch (error) {
+    console.error("Delete Error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+

@@ -6,7 +6,7 @@ const appointmentController = require("../controllers/appointmentController");
 // 👇 Put more specific routes ABOVE general routes
 router.put(
   "/appointments/:doctorId/:appointmentId/status",
-  authMiddleware, // ✅ Middleware added
+  authMiddleware,
   appointmentController.updateAppointmentStatusByDoctor
 );
 
@@ -36,6 +36,13 @@ router.put(
   "/appointments/:id/status",
   authMiddleware,
   appointmentController.updateAppointmentStatus
+);
+
+// ✅ CORRECTED DELETE route
+router.delete(
+  "/appointments/:doctorId/:appointmentId",
+  authMiddleware,
+  appointmentController.deleteAppointmentByDoctor
 );
 
 module.exports = router;

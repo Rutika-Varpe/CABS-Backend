@@ -88,11 +88,14 @@ const loginUser = async (req, res) => {
   }
 
   // Generate JWT token
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ id: user.id , full_name: user.full_name,}, process.env.JWT_SECRET, {
   expiresIn: "1h",
 });
 
 res.json({ token, user });
 };
+
+
+
 
 module.exports = { registerUser, loginUser, getDoctors};
