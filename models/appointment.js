@@ -54,4 +54,6 @@ Appointment.belongsTo(User, {
 });
 
 
+
+
 module.exports = Appointment;

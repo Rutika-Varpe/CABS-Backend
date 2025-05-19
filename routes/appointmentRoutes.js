@@ -45,4 +45,6 @@ router.delete(
   appointmentController.deleteAppointmentByDoctor
 );
 
+router.put('/status/patient/:patientId/:appointmentId', authMiddleware, appointmentController.updateAppointmentStatusByPatient);
+
 module.exports = router;

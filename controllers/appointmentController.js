@@ -162,3 +162,36 @@ exports.deleteAppointmentByDoctor = async (req, res) => {
   }
 };
 
+
+
+exports.updateAppointmentStatusByPatient = async (req, res) => {
+  const { patientId, appointmentId } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ message: "Status is required" });
+  }
+
+  try {
+    const appointment = await Appointment.findOne({
+      where: {
+        id: appointmentId,
+        patient_id: patientId,
+      },
+    });
+
+    if (!appointment) {
+      return res
+        .status(404)
+        .json({ message: "Appointment not found or unauthorized" });
+    }
+
+    appointment.status = status;
+    await appointment.save();
+
+    res.json({ message: "Appointment status updated", appointment });
+  } catch (err) {
+    console.error("Failed to update appointment status by patient:", err);
+    res.status(500).json({ message: "Failed to update appointment status" });
+  }
+};
